@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Assignment-09</title>
+
+    <style>
+        body{
+            background: #000;
+        }
+
+        main {
+            width: fit-content;
+            height: fit-content;
+            position: absolute;
+
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+        }
+
+        #light-panel {
+            display: flex;
+            width: fit-content;
+            height: fit-content;
+            margin: auto;
+        }
+
+        #btn-panel {
+            text-align: center;
+            margin: 20px 0px;
+        }
+
+        .light {
+            background: white;
+            width: 90px;
+            aspect-ratio: 2/1;
+            border: 2px solid black;
+        }
+
+
+        .light_on {
+            background: red;
+            box-shadow: 0px 0px 20px red;
+        }
+        .light_on2 {
+            background: orangered;
+            box-shadow: 0px 0px 20px orangered;
+        }
+
+    </style>
+
+
+</head>
+<body>
+<main>
+    <section id="light-panel">
+
+        <div class="light"></div>
+        <div class="light"></div>
+        <div class="light"></div>
+        <div class="light"></div>
+        <div class="light"></div>
+        <div class="light"></div>
+        <div class="light"></div>
+        <div class="light"></div>
+        <div class="light"></div>
+
+    </section>
+    <section id="btn-panel">
+        <button type="button" id="start">Start</button>
+        <button type="button" id="stop">Stop</button>
+    </section>
+</main>
+
+<audio id="audio" src="assets/aud/audio.mp3"></audio>
+
+
+<script src="assets/lib/jquery-3.7.1.min.js"></script>
+<script>
+
+    var current_light_index = 0;
+    var max_light_count = 8;
+    var move = "RIGHT"; // RIGHT or LEFT
+
+    var myInterval = null;
+
+    function updateLightPanel() {
+        $(".light").removeClass("light_on");
+        $(".light").removeClass("light_on2");
+
+
+        $(".light").eq(current_light_index).addClass("light_on");
+
+        if(move==="RIGHT") {
+            if(current_light_index!==0) $(".light").eq(current_light_index-1).addClass("light_on2");
+
+            ++current_light_index;
+            if(current_light_index>max_light_count - 2) {
+                move = "LEFT";
+            }
+
+        } else {
+            $(".light").eq(current_light_index+1).addClass("light_on2");
+
+            --current_light_index;
+            if(current_light_index===0) {
+                move = "RIGHT";
+            }
+        }
+
+    }
+
+    $("#start").on("click", () => {
+        myInterval = setInterval(updateLightPanel, 100);
+        $("#audio")[0].play();
+    });
+
+    $("#stop").on("click", () => {
+        myInterval = clearInterval(myInterval);
+        $("#audio")[0].pause();
+    });
+
+</script>
+
+</body>
+</html>
